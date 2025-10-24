@@ -2,14 +2,14 @@ name: 'Download SCP:SL References'
 description: 'Downloads managed DLLs used by SCP: Secret Laboratory'
 
 inputs:
-  directory:
-    description: Where to place the DLLs
-    required: false
-    default: References
   branch:
     description: Steam branch
     required: false
     default: public
+  directory:
+    description: Where to place the DLLs
+    required: false
+    default: References
   specify-reference-path:
     description: Whether to set the ReferencePath environment variable
     required: false
@@ -20,7 +20,7 @@ runs:
 
   steps:
     - name: Install DepotDownloader
-      uses: cs2-analysis/setup-steam-depot-downloader@v1
+      uses: cs2-analysis/setup-steam-depot-downloader@v1.0.1
 
     - name: Resolve Paths
       id: paths
