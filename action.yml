@@ -1,0 +1,51 @@
+name: 'Download SCP:SL References'
+description: 'Downloads managed DLLs used by SCP: Secret Laboratory'
+
+inputs:
+  directory:
+    description: Where to place the DLLs
+    required: false
+    default: References
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install DepotDownloader
+      uses: cs2-analysis/setup-steam-depot-downloader@v1
+
+    - name: Resolve Paths
+      id: paths
+      run: |
+        RAW_TEMP="${{ runner.temp }}"
+        RAW_TARGET="${{ inputs.directory }}"
+        TEMP="${RAW_TEMP//\\//}"
+        TARGET="${RAW_TARGET//\\//}"
+        REFERENCES=$TEMP/SCPSL-References
+
+        echo "file-list=$TEMP/file-list.txt" >> "$GITHUB_OUTPUT"
+        echo "references=$REFERENCES" >> "$GITHUB_OUTPUT"
+        echo "managed=$REFERENCES/SCPSL_Data/Managed" >> "$GITHUB_OUTPUT"
+        echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    - name: Specify File List
+      run: echo "regex:SCPSL_Data/Managed/.+?\.dll" > ${{ steps.paths.outputs.file-list }}
+      shell: bash
+
+    - name: Download References
+      run: DepotDownloader -app 996560 -branch public -filelist ${{ steps.paths.outputs.file-list }} -dir ${{ steps.paths.outputs.references }}
+      shell: bash
+
+    - name: Create Target Directory
+      run: mkdir -p ${{ steps.paths.outputs.target }}
+      shell: bash
+
+    - name: Move References
+      run: mv ${{ steps.paths.outputs.managed }}/ ${{ steps.paths.outputs.target }}/
+      shell: bash
+
+branding:
+  author: Axwabo
+  color: black
+  icon: download
