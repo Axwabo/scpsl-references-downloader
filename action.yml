@@ -9,7 +9,7 @@ inputs:
   directory:
     description: Where to place the DLLs
     required: false
-    default: SCPSL-References
+    default: ${{ runner.temp }}/SCPSL-References
   specify-reference-path:
     description: Whether to set the ReferencePath environment variable
     required: false
