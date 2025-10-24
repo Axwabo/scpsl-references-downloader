@@ -58,6 +58,11 @@ runs:
       run: echo "ReferencePath=${{ steps.paths.outputs.target }}" >> "$GITHUB_ENV"
       shell: bash
 
+  outputs:
+    target:
+      description: The directory where references were placed
+      value: ${{ steps.paths.outputs.target }}
+
 branding:
   author: Axwabo
   color: black
