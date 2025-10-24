@@ -70,8 +70,9 @@ The `target` output of the workflow specifies the directory where references wer
 > [Windows info](https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md#net-core-tools)
 
 ```yaml
-- name: Set Up .NET
-  uses: actions/setup-dotnet@v5
+- uses: actions/checkout@v5
+
+- uses: actions/setup-dotnet@v5
   with:
     dotnet-version: 9.0.x
 
@@ -87,4 +88,6 @@ The `target` output of the workflow specifies the directory where references wer
   run: dotnet build
   env:
     ReferencePath: ${{ steps.refs.outputs.target }}
+
+# Upload artifacts and/or create release
 ```
