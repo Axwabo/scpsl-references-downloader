@@ -6,6 +6,10 @@ inputs:
     description: Where to place the DLLs
     required: false
     default: References
+  branch:
+    description: Steam branch
+    required: false
+    default: public
 
 runs:
   using: composite
@@ -34,7 +38,7 @@ runs:
       shell: bash
 
     - name: Download References
-      run: DepotDownloader -app 996560 -branch public -filelist ${{ steps.paths.outputs.file-list }} -dir ${{ steps.paths.outputs.references }}
+      run: DepotDownloader -app 996560 -branch ${{ inputs.branch }} -filelist ${{ steps.paths.outputs.file-list }} -dir ${{ steps.paths.outputs.references }}
       shell: bash
 
     - name: Create Target Directory
