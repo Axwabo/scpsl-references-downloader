@@ -9,7 +9,7 @@ inputs:
   directory:
     description: Where to place the DLLs
     required: false
-    default: References
+    default: SCPSL-References
   specify-reference-path:
     description: Whether to set the ReferencePath environment variable
     required: false
@@ -50,7 +50,7 @@ runs:
       shell: bash
 
     - name: Move References
-      run: mv ${{ steps.paths.outputs.managed }}/ ${{ steps.paths.outputs.target }}/
+      run: mv ${{ steps.paths.outputs.managed }}/* ${{ steps.paths.outputs.target }}
       shell: bash
 
     - name: Specify ReferencePath
