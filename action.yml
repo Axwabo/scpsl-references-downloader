@@ -10,10 +10,17 @@ inputs:
     description: Where to place the DLLs
     required: false
     default: ${{ runner.temp }}/SCPSL-References
-  specify-reference-path:
-    description: Whether to set the ReferencePath environment variable
+  specify-sl-references:
+    description: Whether to set the SL_REFERENCES environment variable
     required: false
     default: "true"
+  preset:  # TODO
+    description: A preset of files to download. Accepted values are "essentials", "essentials-system", "advanced"
+    required: false
+  file-list:
+    description: The file list to download. Ignored if the preset is specified.
+    required: false
+    default: "regex:SCPSL_Data/Managed/.+?\.dll"
 
 outputs:
   target:
@@ -25,7 +32,9 @@ runs:
 
   steps:
     - name: Install DepotDownloader
-      uses: cs2-analysis/setup-steam-depot-downloader@v1.0.1
+      uses: Axwabo/setup-steam-depot-downloader@v1.1
+      with: 
+        test: "false"
 
     - name: Resolve Paths
       id: paths
@@ -43,7 +52,8 @@ runs:
       shell: bash
 
     - name: Specify File List
-      run: echo "regex:SCPSL_Data/Managed/.+?\.dll" > ${{ steps.paths.outputs.file-list }}
+      if: inputs.preset == ''
+      run: printf "${{ inputs.file-list }}" > ${{ steps.paths.outputs.file-list }}
       shell: bash
 
     - name: Download References
@@ -58,9 +68,9 @@ runs:
       run: mv ${{ steps.paths.outputs.managed }}/* ${{ steps.paths.outputs.target }}
       shell: bash
 
-    - name: Specify ReferencePath
-      if: inputs.specify-reference-path
-      run: echo "ReferencePath=${{ steps.paths.outputs.target }}" >> "$GITHUB_ENV"
+    - name: Specify SL_REFERENCES
+      if: inputs.specify-sl-references != 'false'
+      run: echo 'SL_REFERENCES=${{ steps.paths.outputs.target }}' >> "$GITHUB_ENV"
       shell: bash
 
 branding:
