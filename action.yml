@@ -32,7 +32,7 @@ runs:
 
   steps:
     - name: Install DepotDownloader
-      uses: Axwabo/setup-steam-depot-downloader@master # TODO
+      uses: Axwabo/setup-steam-depot-downloader@testing # TODO
 
     - name: Resolve Paths
       id: paths
