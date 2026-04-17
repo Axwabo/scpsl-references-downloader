@@ -20,7 +20,7 @@ inputs:
   file-list:
     description: The file list to download. Ignored if the preset is specified.
     required: false
-    default: "regex:SCPSL_Data/Managed/.+?\.dll"
+    default: 'regex:SCPSL_Data/Managed/.+?\.dll'
 
 outputs:
   target:
@@ -34,7 +34,7 @@ runs:
     - name: Install DepotDownloader
       uses: Axwabo/setup-steam-depot-downloader@v1.1
       with: 
-        test: "false"
+        test: 'false'
 
     - name: Resolve Paths
       id: paths
